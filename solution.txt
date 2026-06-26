@@ -1,0 +1,7 @@
+if (BoardMatrix[i][j].getBomb() == true){
+mvprintw(i,j,"%c",'x');
+}else{
+mvprintw(i,j,"%d",BoardMatrix[i][j].getAdjacentBombs());
+}
+
+Into showBoard
