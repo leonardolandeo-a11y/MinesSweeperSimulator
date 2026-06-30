@@ -22,6 +22,8 @@ Clase jugador
 
     -Move(Board* board) -> Se encarga de manejar movimientos, colocar banderas y desbloquear espacios en el tablero
 
+
+    virtual bool Move(Board* board)=0; -> Dado que usaremos herencia para dividir el jugador computadora y el real usaremos un metodo virtual para poder aplicar polimorfismo
 */
 class Player{
 private:
@@ -36,7 +38,8 @@ public:
     void setY(int row_y);
     void ShowPlayer();
 
-    bool Move(Board* board);
+    virtual bool Move(Board* board)=0;
+    virtual ~Player();
 
 };
 

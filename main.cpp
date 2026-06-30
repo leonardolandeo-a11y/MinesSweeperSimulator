@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "Cell.h"
+#include "HumanPlayer.h"
 using namespace std;
 
 
@@ -25,17 +26,17 @@ int main() {
     /* 
     Instancias de las clases:
         BoardGame -> Representa un puntero a el Heap donde estara la clase Board que representa al tablero
-        PlayerGame -> Representa un puntero al heap donde estara la clase Player que representa al jugador
+        PlayerGame -> Representa un puntero al heap donde estara la clase Player que representa al jugador (Usamos como clase base a la clase Player dado que la clase HumanPlayer es un tipo de jugador)
         
     */
     Board* BoardGame = new Board(m,n);
-    Player* PlayerGame = new Player(0,2, '@');
+    Player* PlayerGame = new HumanPlayer(0,2, '@');
 
     /*
     Variables:
         level -> representa cuantas bombas habra en el tablero
     */
-    int level = 150;
+    int level = 50;
 
     /*
     Metodos inciales:
