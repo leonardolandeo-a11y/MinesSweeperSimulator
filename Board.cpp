@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "ncurses.h"
 
 
 /*
@@ -139,27 +140,44 @@ ShowBoard:
 */
 void Board::ShowBoard(){
 
-    for (int i = 0; i< m; i++){
-        for(int j= 0; j<n;j++){
+    for (int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            
             if(BoardMatrix[i][j].getFlagged()){
-                mvprintw(i,j,"%c",'F');
+                attron(COLOR_PAIR(2)); // Activa Amarillo
+                mvprintw(i, j, "%c", 'F');
+                attroff(COLOR_PAIR(2)); // Desactiva
             }
             else if (!BoardMatrix[i][j].getRevealed()){
-                mvprintw(i,j,"%c",'#');
+                attron(COLOR_PAIR(1)); // Activa Verde
+                mvprintw(i, j, "%c", '#');
+                attroff(COLOR_PAIR(1)); // Desactiva
             }
             else if (BoardMatrix[i][j].getBomb()){
-                mvprintw(i,j,"%c",'X');
+                attron(COLOR_PAIR(3)); // Activa Rojo
+                mvprintw(i, j, "%c", 'X');
+                attroff(COLOR_PAIR(3)); // Desactiva
             }
             else{
-                mvprintw(i,j,"%d",BoardMatrix[i][j].getNeighborBombs());
+                int neighbors = BoardMatrix[i][j].getNeighborBombs();
+                
+                if (neighbors > 0) {
+                    // Iniciamos en el selector de colores
+                    int color_pair_id = neighbors + 3;  
+                    
+                    attron(COLOR_PAIR(color_pair_id));
+                    mvprintw(i, j, "%d", neighbors);
+                    attroff(COLOR_PAIR(color_pair_id));
+                } else {
+                    // Si son 0 entonces los dejaremos de gris 
+                    mvprintw(i, j, "%c", '0'); 
+                }
             }
 
         }
     }
     refresh();
 }
-
-
 /*
 RevealEmptyCells:
     - Caracteristicas;
@@ -239,4 +257,44 @@ bool Board::RevealCell(int i, int j){
 
     RevealEmptyCells(i,j);
     return true;
+}
+
+
+
+/* Getters:
+    - Usaremos los getters para darle informacion del tablero al computador 
+    - Cada uno de estos revelara informacion acerca de la celda donde se esta intentando buscar algo
+
+    - bool Board::getRevealedCell(int x, int y) -> Permite saber a la computadora si la celda ha sido revelada
+    - bool Board::getFlaggedCell(int x, int y) -> Permite saber a la computadora si la celda tiene una bandera 
+    - int Board::getNeighborBombsCell(int x, int y) -> Permite saber cuantas bombas hay al rededor de una casilla
+*/
+bool Board::getRevealedCell(int x, int y){
+    return BoardMatrix[x][y].getRevealed();
+}
+
+
+bool Board::getFlaggedCell(int x, int y){
+    return BoardMatrix[x][y].getFlagged();
+}
+int Board::getNeighborBombsCell(int x, int y){
+    return BoardMatrix[x][y].getNeighborBombs();
+}
+
+/*
+bool Board::CheckWin():
+    - Recorreremos casilla por casilla para verificar que todas las casilals seguras (sin bombas) hayan sido reveladas
+    - Retorna true si todas las casillas han sido reveladas
+    - Retorna false si todavia hay celdas sin revelar
+*/
+
+bool Board::CheckWin(){
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            if(!BoardMatrix[i][j].getBomb() && !BoardMatrix[i][j].getRevealed()){
+                return false; // aun falta revelar una celda segura
+            }
+        }
+    }
+    return true; 
 }

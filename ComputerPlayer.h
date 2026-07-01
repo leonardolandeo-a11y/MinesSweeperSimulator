@@ -6,7 +6,11 @@ class ComputerPlayer: public Player{
 public:
     ComputerPlayer(int x, int y, char shape);
     bool Move(Board *Board) override;
-    ~ComputerPlayer(){};
+    bool SafeMove(Board* Board);
+    bool RandomMove(Board* Board);
+    bool PlaceFlagComputer(Board* board);
+
+    ~ComputerPlayer();
 };
 
 

@@ -93,6 +93,10 @@ private:
 
 public:
     Board(int m, int n);
+    bool getRevealedCell(int x,int y);
+    bool getFlaggedCell(int x, int y);
+    int getNeighborBombsCell(int x, int y);
+    bool CheckWin();
 
     void CalculateNeighborBombs();
     void ShowBoard();
