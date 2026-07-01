@@ -13,7 +13,7 @@ public:
     int DrawInterfaceOptions();
     char PlayerOptions();
     char DifficultyInterface();
-    char Win();
+    void Win();
     void GameOver();
 };
 

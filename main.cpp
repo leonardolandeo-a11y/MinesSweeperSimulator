@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "ComputerPlayer.h"
 #include "HumanPlayer.h"
+#include "ScoredBoard.h"
 #include <ctime>
 using namespace std;
 
@@ -50,8 +51,9 @@ int main() {
     Board* BoardGame = new Board(m,n);
     Player* PlayerGame = new HumanPlayer(0,2, '@');
     Player* PlayerGameComputer = new ComputerPlayer(0,2,'@');
-
     Menu* menu = new Menu();
+    Scoreboard* score = new Scoreboard();
+
     /*
     Variables:
         level -> representa cuantas bombas habra en el tablero
@@ -92,14 +94,39 @@ int main() {
     char ModoJuego = 0;    
     bool modoElegido = false;
     time_t StartTime = time(nullptr);
-
+    int Time;
     while(true){
         clear();
         if (BoardGame->CheckWin()){
             clear();
-            char PlayAgain = menu->Win();
+            // Proyectar pantalla de ganar
+            menu->Win();
+            // Guardamos jugadro en el historial 
+            
+            time_t CurrentTime = time(nullptr);
+            int FinalTime = CurrentTime - StartTime; 
+            char name[50];
+            echo(); // Muestra las teclas 
+            mvprintw(17, 10, "Ingrese su nombre: ");
+            getstr(name); // Solo acepta Chars asi que debemos guardar los datos en un char
+            noecho(); // Oculta las teclas
+            score->addRecord(name, FinalTime);
+            clear();
+            // Volver a jugar
+            mvprintw(20, 10, "¿Volver a jugar?(1/0): ");
+            mvprintw(18,10," ");
+            refresh();
+            char PlayAgain = getch();
+
+            clear();
+            
+            
             if (PlayAgain == '1'){
                 delete BoardGame;
+                delete PlayerGame;
+                delete PlayerGameComputer;
+                PlayerGame = new HumanPlayer(0,2,'@');
+                PlayerGameComputer = new ComputerPlayer(0,2,'@');
                 BoardGame = new Board(m,n);
                 BoardGame->PlaceBombs(level);
                 BoardGame->CalculateNeighborBombs();
@@ -131,7 +158,7 @@ int main() {
             }
 
             time_t CurrentTime = time(nullptr);
-            int Time = CurrentTime - StartTime;
+            Time = CurrentTime - StartTime;
             mvprintw(22,0,"Time %d s",Time);
             if (level == 30){
                 mvprintw(23,0, "Dificultad: Facil");
@@ -187,10 +214,14 @@ int main() {
             timer = 0;
             continue;
         }
+        if (Opciones == 3){
+            score->displayScores();
+        }
 
         timer++;
     }
     endwin(); // Restaura la terminal a su estado normal
+    delete score;
     delete BoardGame; 
     delete PlayerGame;
     delete PlayerGameComputer;

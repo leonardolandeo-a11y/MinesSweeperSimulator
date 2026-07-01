@@ -59,10 +59,6 @@ int Menu::DrawInterfaceOptions(){
         
         case '3':
             clear();
-            mvprintw(14, 10, "Registro (proximamente)");
-            refresh();
-            getch();
-            clear();
             return 3;
 
         case '0':
@@ -97,7 +93,7 @@ char Menu::PlayerOptions(){
 }
 
 
-char Menu::Win(){
+void Menu::Win(){
 
     mvprintw(2, 10, "===========================================================================");
     mvprintw(3, 10, "** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **");
@@ -113,14 +109,6 @@ char Menu::Win(){
     mvprintw(13,10, "* *");
     mvprintw(14,10, "** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **");
     mvprintw(15,10, "===========================================================================");
-    mvprintw(17, 10, "¿Volver a jugar?(1/0): ");
-    
-    mvprintw(15,10," ");
-    refresh();
-    char choice = getch();
-
-    clear();
-    return choice;
 
 }
 
