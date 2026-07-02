@@ -8,10 +8,14 @@
 
 using namespace std;
 
-struct PlayerRecord{
+class PlayerRecord{
+public:
     string name;
     int time;
     string FechaActual;
+    bool operator<(PlayerRecord& other) {
+        return this->time < other.time;
+    }
 };
 
 class Scoreboard{

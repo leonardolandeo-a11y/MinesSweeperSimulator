@@ -102,7 +102,11 @@ public:
     void ShowBoard();
     void RevealEmptyCells(int i, int j);
     void CreateFlag(int i, int j);
+
+
     void PlaceBombs(int numberBombs);
+
+    
     bool RevealCell(int i, int j);
     
     ~Board(){}

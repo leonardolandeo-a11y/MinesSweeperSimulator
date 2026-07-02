@@ -1,5 +1,6 @@
 #include "ScoredBoard.h"
 #include <ncurses.h>
+#include <algorithm>
 
 Scoreboard::Scoreboard(){
 
@@ -33,8 +34,16 @@ void Scoreboard::addRecord(string name,int time,string FechaActual){
 
     records.push_back(p);
 
+    // sort usa el operador <
+    // Nosotros estamos sobrecargando el operador <
+    // Sort compara los elementos dentro del vector como son de tipo PlayerRecord entonces los compara
+    // PlayerRecord1 < PlayerRecord2 ??? 
+    // Nosotros hemos sobrecargado el operador tal que cuando ocurra esa operacion compare exactamente los tiempso de cada PlayerRecord 
+    // Sort compara con respecto al tiempo de cada jugador
+    sort(records.begin(), records.end());
     // Escribimos datos en archivo
     ofstream file("scores.txt");
+    
 
     for(int i=0;i<records.size() && i<10;i++){
 
