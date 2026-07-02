@@ -2,6 +2,21 @@
 #include <ncurses.h>
 #include <algorithm>
 
+// Imprimir el nombre, el tiempo y la fecha actual cada vez que usemos
+// 
+ostream& operator<<(ostream& os, PlayerRecord& OtherPlayer){
+    os<<OtherPlayer.name<<" "<<OtherPlayer.time<< " "<<OtherPlayer.FechaActual;
+    return os;
+}
+// Recibe datos y lo guarda 
+istream& operator>>(istream& is, PlayerRecord& OtherPlayer){
+    is >> OtherPlayer.name>>OtherPlayer.time>>OtherPlayer.FechaActual;
+    return is;
+}
+
+
+
+
 Scoreboard::Scoreboard(){
 
     ifstream file("scores.txt");
@@ -9,10 +24,10 @@ Scoreboard::Scoreboard(){
     PlayerRecord p;
 
     while(true){
-        // Leer elementos
-        file >> p.name; 
-        file >> p.time;
-        file >> p.FechaActual;
+        // Sobrecarga file>>
+        // Lee file y guarda todo en p (name, time y FechaActual)
+        file >> p;
+
 
         if(file.fail()){ // Si ya no quedan mas elementos en el Scores
             break;
@@ -45,9 +60,11 @@ void Scoreboard::addRecord(string name,int time,string FechaActual){
     ofstream file("scores.txt");
     
 
-    for(int i=0;i<records.size() && i<10;i++){
+    for(int i=0;i<records.size() ;i++){
 
-        file<<records[i].name<<" "<<records[i].time<<" "<<records[i].FechaActual<<endl;
+        // Sobrecarga file<<
+        // lee file y imprime por filas 
+        file<<records[i]<<endl;
     }
 
     file.close();
@@ -61,7 +78,7 @@ void Scoreboard::displayScores(){
     mvprintw(3,10,"           JUGADORES          ");
     mvprintw(4,10,"===============================");
 
-    for(int i=0;i<records.size() && i<10;i++){
+    for(int i=0;i<records.size();i++){
 
         mvprintw(6+i,10,"%d. %s - %d s - %s",i+1, records[i].name.c_str() ,records[i].time, records[i].FechaActual.c_str());
     }

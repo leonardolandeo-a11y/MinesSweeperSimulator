@@ -16,6 +16,16 @@ public:
     bool operator<(PlayerRecord& other) {
         return this->time < other.time;
     }
+
+    // colocar friend nos permite cambiar la sintaxis del operador 
+    // Antes : PlayerRecord << file
+    // Ahora : file << PlayerRecrod
+
+    // Imprimir datos 
+    friend ostream& operator<<(ostream& os, PlayerRecord& OtherPlayer);
+
+    // Recibir datos
+    friend istream& operator>>(istream& is, PlayerRecord& OtherPlayer);
 };
 
 class Scoreboard{
