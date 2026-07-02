@@ -3,7 +3,11 @@
 #include "Board.h"
 ComputerPlayer::ComputerPlayer(int x, int y, char shape): Player(x,y,shape){};
 
-
+/* Safe Move:
+    - Busca una jugada segura. 
+    - Recorre todo el tablero y solo analiza las casillas que ya fueron reveladas. 
+    - Si alrededor de una casilla revelada ya hay tantas banderas como minas vecinas, entonces las demás casillas ocultas alrededor consideran seguras y se revelan.
+*/
 
 bool ComputerPlayer::SafeMove(Board* Board){
     for (int i = 0; i<m; i++){
@@ -134,6 +138,11 @@ bool ComputerPlayer::SafeMove(Board* Board){
     return false;
 }
 
+/* RamdonMove:
+    - Realiza un movimiento aleatorio.
+    - Se usa cuando la computadora no puede deducir una jugada segura ni colocar bandera.
+*/
+
 bool ComputerPlayer::RandomMove(Board* board){
     while (true){
         int x = rand()%20;
@@ -145,6 +154,13 @@ bool ComputerPlayer::RandomMove(Board* board){
         }
     }
 }
+
+/* PlaceFlagComputer:
+    - Intenta colocar una bandera de forma lógica.
+    - Recorre las casillas reveladas y cuenta cuántas casillas ocultas hay alrededor.
+    - Si el número de casillas ocultas coincide con número de minas vecinas, entonces esas casillas ocultas deben ser minas y se colocan banderas.
+*/
+
 bool ComputerPlayer::PlaceFlagComputer(Board* board){
     for (int i = 0; i<m;i++){
         for (int j = 0; j<n;j++){
@@ -282,6 +298,10 @@ bool ComputerPlayer::PlaceFlagComputer(Board* board){
     return false;
 }
 
+/* Move:
+    - Es el método principal del jugador automático.
+    - Define el orden de prioridad de las acciones de la computadora.
+*/
 
 bool ComputerPlayer::Move(Board* board){
     napms(500);
