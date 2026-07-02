@@ -11,6 +11,7 @@ using namespace std;
 struct PlayerRecord{
     string name;
     int time;
+    string FechaActual;
 };
 
 class Scoreboard{
@@ -20,7 +21,7 @@ private:
 public:
     Scoreboard();
 
-    void addRecord(string name,int time);
+    void addRecord(string name,int time,string FechaActual);
     void displayScores();
 };
 

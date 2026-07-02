@@ -15,6 +15,7 @@ public:
     char DifficultyInterface();
     void Win();
     void GameOver();
+    void PlayAgain();
 };
 
 #endif

@@ -29,7 +29,6 @@ int main() {
     cbreak();
     keypad(stdscr,TRUE);
     srand(time(0));
-
     init_pair(1, COLOR_GREEN, COLOR_BLACK);  // Para el '#' verde
     init_pair(2, COLOR_YELLOW, COLOR_BLACK); // Para la 'F' Amarillo
     init_pair(3, COLOR_RED, COLOR_BLACK);    // Para la 'X' roja
@@ -106,14 +105,23 @@ int main() {
             time_t CurrentTime = time(nullptr);
             int FinalTime = CurrentTime - StartTime; 
             char name[50];
+            // Calculamos la fecha actual:
+            time_t ahora = time(0);          // fecha y hora actual
+            tm* fecha = localtime(&ahora);  // fecha local
+
+            string dia = to_string(fecha->tm_mday);
+            string mes = to_string(fecha->tm_mon + 1);     // Enero = 0, por eso +1
+            string anio = to_string(fecha->tm_year + 1900);// Años desde 
+            string FechaActual = dia +"/"+ mes+ "/" + anio;
+
             echo(); // Muestra las teclas 
             mvprintw(17, 10, "Ingrese su nombre: ");
             getstr(name); // Solo acepta Chars asi que debemos guardar los datos en un char
             noecho(); // Oculta las teclas
-            score->addRecord(name, FinalTime);
+            score->addRecord(name, FinalTime,FechaActual);
             clear();
             // Volver a jugar
-            mvprintw(20, 10, "¿Volver a jugar?(1/0): ");
+            menu->PlayAgain();
             mvprintw(18,10," ");
             refresh();
             char PlayAgain = getch();
@@ -216,6 +224,7 @@ int main() {
         }
         if (Opciones == 3){
             score->displayScores();
+            continue;
         }
 
         timer++;

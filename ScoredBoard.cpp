@@ -11,6 +11,7 @@ Scoreboard::Scoreboard(){
         // Leer elementos
         file >> p.name; 
         file >> p.time;
+        file >> p.FechaActual;
 
         if(file.fail()){ // Si ya no quedan mas elementos en el Scores
             break;
@@ -22,12 +23,13 @@ Scoreboard::Scoreboard(){
 }
 
 
-void Scoreboard::addRecord(string name,int time){
+void Scoreboard::addRecord(string name,int time,string FechaActual){
 
     PlayerRecord p;
 
     p.name=name;
     p.time=time;
+    p.FechaActual = FechaActual;
 
     records.push_back(p);
 
@@ -36,7 +38,7 @@ void Scoreboard::addRecord(string name,int time){
 
     for(int i=0;i<records.size() && i<10;i++){
 
-        file<<records[i].name<<" "<<records[i].time<<endl;
+        file<<records[i].name<<" "<<records[i].time<<" "<<records[i].FechaActual<<endl;
     }
 
     file.close();
@@ -47,12 +49,12 @@ void Scoreboard::displayScores(){
     clear();
 
     mvprintw(2,10,"===============================");
-    mvprintw(3,10,"      TOP 10 JUGADORES         ");
+    mvprintw(3,10,"           JUGADORES          ");
     mvprintw(4,10,"===============================");
 
     for(int i=0;i<records.size() && i<10;i++){
 
-        mvprintw(6+i,10,"%d. %s - %d s",i+1, records[i].name.c_str() ,records[i].time);
+        mvprintw(6+i,10,"%d. %s - %d s - %s",i+1, records[i].name.c_str() ,records[i].time, records[i].FechaActual.c_str());
     }
 
     mvprintw(18,10,"Presione una tecla...");
